@@ -23,11 +23,17 @@ const WeatherCardsContainer = styled.div`
 
 export default function CityPage() {
     const params = useParams();
+
+    //Fetch data with SWR
     const{data, error} = useSWR(`/api/getWeatherData?city=${params.city}`, (url) =>
     fetch(url).then(res => res.json())
     );
+
+    //Handle error and loading states
     if (error) return <div>Failed to load</div>;
     if (!data) return <div>Loading...</div>;
+
+    //If there is data, get the days otherwise assign an empty array
     const days = data?.days || [];
     return (
         <WeatherContentWrapper>
